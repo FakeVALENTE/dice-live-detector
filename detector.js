@@ -93,4 +93,3 @@ if (!SECRET) {
 }
 
 verificarTodos();
-setInterval(verificarTodos, INTERVALO);
