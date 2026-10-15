@@ -1,0 +1,36 @@
+
+name: Detector de Lives TikTok
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: detector-live
+  cancel-in-progress: false
+
+jobs:
+  verificar-lives:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Baixar arquivos
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      - name: Verificar lives do TikTok
+        env:
+          API_SECRET: ${{ secrets.API_SECRET }}
+        run: node detector.js
